@@ -27,11 +27,17 @@ namespace Converter
                 txtSource.Text = openFileDialog1.FileNames.Count().ToString();
                 if (filenames.Length > 0)
                 {
+                    string names = "";
+                    foreach (string name in openFileDialog1.FileNames)
+                    {
+                        names = names + "\n" + Path.GetFileName(name);
+                    }
+                    MessageBox.Show(names, "Selected messages:");
                     groupBox1.Show();
                 }
                 else
                 {
-                    MessageBox.Show("file not found.");
+                    MessageBox.Show("file not found.", "Error");
                 }
             }
         }
@@ -44,29 +50,36 @@ namespace Converter
             }
             else
             {
-                MessageBox.Show("The format is not selected");
+                MessageBox.Show("The format is not selected", "Error");
             }
 
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Converter con = new Converter();
-            int currentFile = 0;
-            foreach (String file in openFileDialog1.FileNames)
+            if (path != null)
             {
-                currentFile++;
-                progressBar1.Value = (int)((double)((double)currentFile / (double)openFileDialog1.FileNames.Count()) * 100.0);
-                con.convert(comboBox2.Text, file, path);
+                Converter con = new Converter();
+                int currentFile = 0;
+                foreach (String file in openFileDialog1.FileNames)
+                {
+                    currentFile++;
+                    progressBar1.Value = (int)((double)((double)currentFile / (double)openFileDialog1.FileNames.Count()) * 100.0);
+                    con.convert(comboBox2.Text, file, path);
+                }
+                MessageBox.Show("The conversion is successful, the received file is next to the original file", "Successfully");
+                groupBox1.Hide();
+                groupBox2.Hide();
+                comboBox2.Text = "";
+                path = null;
+                filenames = null;
+                openFileDialog1.FileName = null;
+                txtSource.Text = null;
             }
-            MessageBox.Show("The conversion is successful, the received file is next to the original file");
-            groupBox1.Hide();
-            groupBox2.Hide();
-            comboBox2.Text = "";
-            path = null;
-            filenames = null;
-            openFileDialog1.FileName = null;
-            txtSource.Text = null;
+            else
+            {
+                MessageBox.Show("Path not select.", "Error");
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)

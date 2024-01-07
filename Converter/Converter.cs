@@ -11,7 +11,7 @@ namespace Converter
         public Converter() { }
         public void convert(string output, string file_name, string path)
         {
-            int type = 0;
+            int type;
             if (output == "amr") type = 1;
             else if (output == "ogg") type = 2;
             else type = 0;
